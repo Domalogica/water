@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from time import sleep
-import requests
 
 import network
 import uart
-import config
 
 # mashine = uart.Mashine(config.ID)
 # mashine.start(network.get_config())
@@ -15,23 +13,40 @@ import config
 
 class Work(object):
     def __init__(self, device_id):
-        self.mashine = uart.Mashine(device_id)
+        self.mashine = uart.Mashine(device_id, debug=False)
         self.task = network.STATUS
         self.params = {}
 
+    def run(self):
+        if self.task.lower() == network.STATUS:
+            self.report()
+        elif self.task.lower() == network.START:
+            print(self.params)
+            self.mashine.payment(self.params.get('score', 0))
+            self.report()
+        elif self.task.lower() == network.STOP:
+            response = network.get_putting(self.mashine.get_putting(), self.mashine.get_data()['totalPaid'])
+            self.task = response.get('method')
+            self.params = response.get('param')
+        elif self.task == network.ERROR_METHOD:
+            self.task = 'normalise'
+            print(self.task, self.params)
+            self.report()
+        else:
+            print(self.task)
+            self.report()
+
+
     def report(self):
-        if self.task == network.STATUS:
             respons = network.post_status(self.mashine.get_data())
             print(respons)
             self.task = respons.get('method')
             self.params = respons.get('param')
-        elif self.task == network.ERROR_METHOD:
-            print()
 
 
 work = Work(1)
 
 while True:
     work.mashine.read_raw()
-    work.report()
+    work.run()
     sleep(1)

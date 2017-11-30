@@ -1,5 +1,8 @@
 import serial
 import json
+
+import simulation
+
 GET_INFO = b'g\n'
 ENABLE = b'cj\n'
 DISABLE = b'ci\n'
@@ -21,21 +24,17 @@ keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'm
              'mainPump', 'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney',
              'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept']
 
-d = [0, 0, 0, 0, 0, 0, 0, 0, 'WAIT', 'TOO_LOW', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
 keys_odd = ['connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
 
 properties_mashine = ['waterPrice', 'containerMinVolume', 'maxContainerVolume']
+
+STATE_LIST = ['NO_WATER', 'WASH_FILTER', 'WAIT', 'JUST_PAID', 'WORK', 'SETTING', 'SERVICE', 'FREE']
 
 all_keys = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
             'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
             'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
             'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
             'billAccept', 'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
-
-
-all_date = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'WAIT', 'TOO_LOW', 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 3000, 0, 1, '0x324343223452365', 23, 5000]
 
 
 def raw2dict(keys, value):
@@ -50,9 +49,11 @@ def get_value(raw, keys):
 
 
 class Mashine(object):
-    def __init__(self, id_mashine):
+    def __init__(self, id_mashine, debug=False):
         self.id_mashine = id_mashine
-        self._uart = Uart()
+        self.debug = debug
+        if not self.debug:
+            self._uart = Uart()
         self._all_date = {}
         self._packetInfo = {}
         self._properties = {}
@@ -65,6 +66,7 @@ class Mashine(object):
 
     def get_data(self):
         self._packetInfo = get_value(self._all_date, keys_data)
+        self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
         return self._packetInfo
 
     def get_properties(self):
@@ -75,21 +77,37 @@ class Mashine(object):
         self._settings = settings
 
     def payment(self, score):
-        self._remainder = self._uart.get_putting()
-        self._uart.payment(score)
+        if not self.debug:
+            self._remainder = self._uart.get_putting()
+            self._uart.payment(score)
+        else:
+            self._remainder = score
 
     def get_putting(self):
-        score = self._uart.get_putting()
-        self.payment(self._remainder)
-        return score
+        if not self.debug:
+            score = self._uart.get_putting()
+            self.payment(self._remainder)
+            self.read_raw()
+            return score
+        else:
+            score = self._remainder
+            self._remainder = 0
+            return score
 
     def read_raw(self):
-        raw = self._uart.read_info()
-        self._all_date = raw2dict(all_keys, json.loads(raw.decode()))
+        if not self.debug:
+            raw = self._uart.read_info()
+            self._all_date = raw2dict(all_keys, json.loads(raw.decode()))
+        else:
+            raw = simulation.all_date
+            self._all_date = raw2dict(all_keys, raw)
         return self._all_date
 
     def __del__(self):
-        self._uart.close()
+        try:
+            self._uart.close()
+        except AttributeError:
+            pass
 
 
 def check_code(code, types='code'):
@@ -102,16 +120,21 @@ def check_code(code, types='code'):
         if int(code) >= 0:
             return int(code)
         else:
-            raise IOError
+            return -1
 
 
 class Uart(object):
-    def __init__(self, port='com15', boud_rate=9600):
+    def __init__(self, port='com5', boud_rate=9600):
         self.serial = serial.Serial(port, boud_rate, timeout=1)
 
     def get_putting(self):
         self.write(PUTTING)
-        return check_code(self.read_code(), types='int')
+        result = check_code(self.read(), types='int')
+        i = 0
+        while result < 0 and i < 3:
+            i += 1
+            result = check_code(self.read(), types='int')
+        return result
 
     def payment(self, score):
         data = "%s%i\n" % (PAYMENT, score)
@@ -120,8 +143,7 @@ class Uart(object):
 
     def read_info(self):
         self.write(GET_INFO)
-        readed = self.read_code()
-        if readed:
+        if self.read_code():
             return self.read()
 
     def enable_payment(self):
@@ -136,17 +158,13 @@ class Uart(object):
         if check_code(self.read()):
             return True
         else:
-            raise IOError
+            return False
 
     def write(self, data):
-        print('write -> %s' % data)
         return self.serial.write(data)
 
     def read(self):
-        date = self.serial.readline()
-        print('read -> %s' % date)
-        print(date)
-        return date
+        return self.serial.readline()
 
     def close(self):
         self.serial.close()

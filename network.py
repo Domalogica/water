@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import requests
 import config
+import json
 
-import uart
 
 BASE_URL = 'http://194.67.217.180:8484/'
 # BASE_URL = 'http://192.168.10.30:18787/'
@@ -12,6 +12,9 @@ DIR = 'vodomat/param'
 URL = BASE_URL + DIR
 
 STATUS = 'status'
+START = 'start'
+STOP = 'stop'
+
 ERROR_METHOD = 'error'
 GET_CONFIG = 'get_settings'
 
@@ -31,15 +34,20 @@ def get(method, params=DEFAULD_PARAM):
     return requests.get(url=BASE_URL + method, params=params)
 
 
+def get_putting(left_score, total_paid):
+    print(total_paid)
+    return post(method='response', params={'leftScore': left_score, 'totalPaid': total_paid})
+
+
 def post(method, params=DEFAULD_PARAM, previous_task=None):
     try:
-        return requests.post(url=URL, json=build_message(method, params, previous_task)).json()
-    except requests.exceptions.ConnectionError as e:
-        print(e)
+        respons = requests.post(url=URL, json=build_message(method, params, previous_task))
+        return respons.json()
+    except requests.exceptions.ConnectionError:
         return {'method': ERROR_METHOD, 'param': 'connect error'}
+    except json.decoder.JSONDecodeError:
+        return {'method': ERROR_METHOD, 'param': 'json error'}
 
 
 def build_message(method, params, previous_task=None):
     return {'method': method, 'param': params, 'wm': config.ID, 'previousTask': previous_task}
-
-
