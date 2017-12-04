@@ -27,26 +27,23 @@ def add_data(host, key, clock, value):
 def start_agent(row):
     clock = int(time.time())
     request = {
-            "request": "agent data",
-            "data": [],
-            "clock": clock
-        }
+        "request": "agent data",
+        "data": [],
+        "clock": clock
+    }
 
     for key in row:
-        try:
-            if key == "ping":
-                request["data"].append(add_data(hostname, key, clock, 1))
-            elif key == "leftFromPaid":
-                request["data"].append(add_data(hostname, key, clock, row[key] // 100))
-            elif key == "sessionPaid":
-                request["data"].append(add_data(hostname, key, clock, row[key] // 100))
-            elif key == "totalPaid":
-                request["data"].append(add_data(hostname, key, clock, row[key] // 100))
-            else:
-                request["data"].append(add_data(hostname, key, clock, row[key]))
+        if key == "ping":
+            request["data"].append(add_data(hostname, key, clock, 1))
+        elif key == "leftFromPaid":
+            request["data"].append(add_data(hostname, key, clock, row[key] // 100))
+        elif key == "sessionPaid":
+            request["data"].append(add_data(hostname, key, clock, row[key] // 100))
+        elif key == "totalPaid":
+            request["data"].append(add_data(hostname, key, clock, row[key] // 100))
+        else:
+            request["data"].append(add_data(hostname, key, clock, row[key]))
 
-        except:
-                pass
     try:
         raw = zbx.get_data_to_send(json.dumps(request))
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,5 +57,4 @@ def start_agent(row):
             sock.close()
     except Exception as e:
         print(e)
-    time.sleep(10)
-
+    # time.sleep(10)
