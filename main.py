@@ -13,7 +13,7 @@ import uart
 
 class Work(object):
     def __init__(self, device_id, ports, boud):
-        self.mashine = uart.Mashine(device_id, ports, boud debug=False)
+        self.mashine = uart.Mashine(device_id, ports, boud, debug=False)
         self.task = network.STATUS
         self.params = {}
 
