@@ -19,6 +19,13 @@ ERROR_SHORT = b'-2\n'
 ERROR_LONG = b'-3\n'
 ERROR_TEST = b'-4\n'
 
+all_keys = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
+            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
+            'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
+            'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
+            'billAccept', 'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
+
+
 keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
              'sessionPaid', 'leftFromPaid', 'state', 'container', 'currentContainerVolume', 'consumerPump',
              'mainPump', 'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney',
@@ -30,11 +37,15 @@ properties_mashine = ['waterPrice', 'containerMinVolume', 'maxContainerVolume']
 
 STATE_LIST = ['NO_WATER', 'WASH_FILTER', 'WAIT', 'JUST_PAID', 'WORK', 'SETTING', 'SERVICE', 'FREE']
 
-all_keys = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
-            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
-            'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
-            'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
-            'billAccept', 'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
+
+agent_key = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
+             'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
+             'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
+             'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
+             'billAccept', 'connectBoard', 'tempCPU']
+
+# agent_additional = ['ping', ]
+
 
 
 def raw2dict(keys, value):
@@ -64,9 +75,13 @@ class Mashine(object):
         self.setting(data)
         self.read_raw()
 
+    def zabbix(self):
+        return get_value(self._all_date, agent_key)
+
+
     def get_data(self):
-        self._packetInfo = get_value(self._all_date, keys_data)
-        self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
+        _packetInfo = get_value(self._all_date, keys_data)
+        self._packetInfo['state'] = STATE_LIST[_packetInfo['state']]
         return self._packetInfo
 
     def get_properties(self):

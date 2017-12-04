@@ -52,5 +52,5 @@ else:
 while True:
     work.mashine.read_raw()
     work.run()
-    agent.start_agent(work.mashine.get_data())
+    agent.start_agent(work.mashine.zabbix())
     sleep(1)
