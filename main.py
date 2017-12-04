@@ -5,6 +5,7 @@ from time import sleep
 import os
 import network
 import uart
+import agent
 
 # mashine = uart.Mashine(config.ID)
 # mashine.start(network.get_config())
@@ -51,4 +52,5 @@ else:
 while True:
     work.mashine.read_raw()
     work.run()
+    agent.start_agent(work.mashine.get_data())
     sleep(1)

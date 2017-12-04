@@ -63,6 +63,3 @@ def start_agent(row):
             print(e)
         time.sleep(10)
 
-
-if __name__ == "__main__":
-    start_agent()
