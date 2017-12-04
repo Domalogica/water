@@ -35,12 +35,13 @@ def get(method, params=DEFAULD_PARAM):
 
 
 def get_putting(left_score, total_paid):
-    print(total_paid)
     return post(method='response', params={'leftScore': left_score, 'totalPaid': total_paid})
 
 
 def post(method, params=DEFAULD_PARAM, previous_task=None):
     try:
+        if method == 'response':
+            print(params)
         respons = requests.post(url=URL, json=build_message(method, params, previous_task))
         return respons.json()
     except requests.exceptions.ConnectionError:
