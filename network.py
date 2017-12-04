@@ -46,8 +46,8 @@ def post(method, params=DEFAULD_PARAM, previous_task=None):
         return respons.json()
     except requests.exceptions.ConnectionError:
         return {'method': ERROR_METHOD, 'param': 'connect error'}
-    except json.decoder.JSONDecodeError:
-        return {'method': ERROR_METHOD, 'param': 'json error'}
+    # except json.decoder.JSONDecodeError:
+    #     return {'method': ERROR_METHOD, 'param': 'json error'}
 
 
 def build_message(method, params, previous_task=None):
