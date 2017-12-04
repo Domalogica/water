@@ -3,7 +3,7 @@ ID_DICT = {'wm': ID}
 HOST_NAME = 'vodomat0'
 
 zabbix = {
-    "hostname": "vodomat001",
-    "server": "127.0.0.1",
+    "hostname": "vodomat0",
+    "server": "194.67.217.17",
     "port": 10051
-},
+}
