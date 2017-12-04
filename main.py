@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from time import sleep
-
+import os
 import network
 import uart
 
@@ -12,8 +12,8 @@ import uart
 
 
 class Work(object):
-    def __init__(self, device_id):
-        self.mashine = uart.Mashine(device_id, debug=False)
+    def __init__(self, device_id, ports, boud):
+        self.mashine = uart.Mashine(device_id, ports, boud debug=False)
         self.task = network.STATUS
         self.params = {}
 
@@ -43,8 +43,10 @@ class Work(object):
             self.task = respons.get('method')
             self.params = respons.get('param')
 
-
-work = Work(1)
+if os.name == 'nt':
+    work = Work(1, 'com5', 9600)
+else:
+    work = Work(1, '/dev/ttyS1', 9600)
 
 while True:
     work.mashine.read_raw()

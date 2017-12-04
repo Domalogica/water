@@ -24,15 +24,6 @@ def add_data(host, key, clock, value):
     return {"host": host, "key": key, "value": value, "clock": clock}
 
 
-def report_zabbix():
-    pass
-
-
-
-def send(row):
-    pass
-
-
 def start_agent(row):
     while True:
         clock = int(time.time())

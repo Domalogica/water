@@ -49,11 +49,11 @@ def get_value(raw, keys):
 
 
 class Mashine(object):
-    def __init__(self, id_mashine, debug=False):
+    def __init__(self, id_mashine, ports, boud, debug=False):
         self.id_mashine = id_mashine
         self.debug = debug
         if not self.debug:
-            self._uart = Uart()
+            self._uart = Uart(ports, boud)
         self._all_date = {}
         self._packetInfo = {}
         self._properties = {}
