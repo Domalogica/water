@@ -80,8 +80,8 @@ class Mashine(object):
 
 
     def get_data(self):
-        _packetInfo = get_value(self._all_date, keys_data)
-        self._packetInfo['state'] = STATE_LIST[_packetInfo['state']]
+        self._packetInfo = get_value(self._all_date, keys_data)
+        self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
         return self._packetInfo
 
     def get_properties(self):

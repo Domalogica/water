@@ -42,8 +42,8 @@ def post(method, params=DEFAULD_PARAM, previous_task=None):
     try:
         if method == 'response':
             print(params)
-        respons = requests.post(url=URL, json=build_message(method, params, previous_task))
-        return respons.json()
+        responds = requests.post(url=URL, json=build_message(method, params, previous_task))
+        return responds.json()
     except requests.exceptions.ConnectionError:
         return {'method': ERROR_METHOD, 'param': 'connect error'}
     except ValueError:
