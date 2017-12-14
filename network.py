@@ -35,7 +35,7 @@ def get(method, params=DEFAULD_PARAM):
 
 
 def get_putting(left_score, total_paid):
-    return post(method='response', params={'leftScore': left_score, 'totalPaid': total_paid})
+    return post(method='response', params={' ': left_score, 'totalPaid': total_paid})
 
 
 def post(method, params=DEFAULD_PARAM, previous_task=None):
@@ -48,6 +48,8 @@ def post(method, params=DEFAULD_PARAM, previous_task=None):
         return {'method': ERROR_METHOD, 'param': 'connect error'}
     except ValueError:
         return {'method': ERROR_METHOD, 'param': 'json error'}
+    except ConnectionError:
+        return {'method': ERROR_METHOD, 'param': 'Connection Error'}
 
 
 def build_message(method, params, previous_task=None):

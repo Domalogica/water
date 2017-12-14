@@ -7,6 +7,7 @@ import network
 import uart
 import agent
 
+
 # mashine = uart.Mashine(config.ID)
 # mashine.start(network.get_config())
 # network.post_status(mashine.get_data())

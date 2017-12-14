@@ -20,10 +20,11 @@ ERROR_LONG = b'-3\n'
 ERROR_TEST = b'-4\n'
 
 all_keys = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
-            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
-            'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
-            'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
-            'billAccept', 'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
+            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'totalHardCash',
+            'hardCash', 'hardMoney', 'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
+            'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor',
+            'serviceButton', 'freeButton', 'voltage', 'billAccept', 'connectBoard', 'uid_MC', 'tempCPU',
+            'coffFor10LitOut']
 
 
 keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
