@@ -20,8 +20,8 @@ ERROR_LONG = b'-3\n'
 ERROR_TEST = b'-4\n'
 
 all_keys_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
-            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'totalHardCash',
-            'hardCash', 'hardMoney', 'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
+            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'totalHardCash', 'hardCash',
+            'hardMoney', 'leftFromPaid',  'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
             'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor',
             'serviceButton', 'freeButton', 'voltage', 'billAccept', 'connectBoard', 'uid_MC', 'tempCPU',
             'coffFor10LitOut']
@@ -121,9 +121,9 @@ class Mashine(object):
         if not self.debug:
             raw = self._uart.read_info()
             try:
-                print('raw -> %s len %i' % (raw, len(raw)))
+                print('raw -> %s' % (raw, len(raw)))
             except TypeError:
-                print('raw -> %s len 0' % raw)
+                print('raw -> %s' % raw)
             json_raw = json.loads(raw.decode())
             if len(json_raw) == 30:
                 self._all_date = raw2dict(all_keys_30, json_raw)
