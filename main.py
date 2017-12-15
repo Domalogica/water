@@ -23,7 +23,6 @@ class Work(object):
         if self.task.lower() == network.STATUS:
             self.report()
         elif self.task.lower() == network.START:
-            print(self.params)
             self.mashine.payment(self.params.get('score', 0))
             self.report()
         elif self.task.lower() == network.STOP:
@@ -35,13 +34,10 @@ class Work(object):
             print(self.task, self.params)
             self.report()
         else:
-            print(self.task)
             self.report()
-
 
     def report(self):
             respons = network.post_status(self.mashine.get_data())
-            print(respons)
             self.task = respons.get('method')
             self.params = respons.get('param')
 

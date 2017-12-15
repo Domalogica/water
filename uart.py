@@ -27,7 +27,7 @@ all_keys_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 
             'coffFor10LitOut']
 
 
-all_keys_29 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
+all_keys_30 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
                'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'container',
                'currentContainerVolume', 'consumerPump', 'mainPump','magistralPressure', 'mainValve', 'filterValve',
                'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept',
@@ -86,7 +86,6 @@ class Mashine(object):
     def zabbix(self):
         return get_value(self._all_date, agent_key)
 
-
     def get_data(self):
         self._packetInfo = get_value(self._all_date, keys_data)
         self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
@@ -120,13 +119,15 @@ class Mashine(object):
     def read_raw(self):
         if not self.debug:
             raw = self._uart.read_info()
-            if len(raw) == 29:
-                self._all_date = raw2dict(all_keys_29, json.loads(raw.decode()))
-            elif len(raw) == 33:
-                self._all_date = raw2dict(all_keys_33, json.loads(raw.decode()))
+            print('raw -> %s len %i' % (raw, len(raw)))
+            json_raw = json.loads(raw.decode())
+            if len(json_raw) == 30:
+                self._all_date = raw2dict(all_keys_30, json_raw)
+            elif len(json_raw) == 33:
+                self._all_date = raw2dict(all_keys_33, json_raw)
         else:
             raw = simulation.all_date
-            self._all_date = raw2dict(all_keys_29, raw)
+            self._all_date = raw2dict(all_keys_30, raw)
         return self._all_date
 
     def __del__(self):
