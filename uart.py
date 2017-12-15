@@ -19,12 +19,19 @@ ERROR_SHORT = b'-2\n'
 ERROR_LONG = b'-3\n'
 ERROR_TEST = b'-4\n'
 
-all_keys = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
+all_keys_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
             'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'totalHardCash',
             'hardCash', 'hardMoney', 'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
             'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor',
             'serviceButton', 'freeButton', 'voltage', 'billAccept', 'connectBoard', 'uid_MC', 'tempCPU',
             'coffFor10LitOut']
+
+
+all_keys_29 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
+               'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'container',
+               'currentContainerVolume', 'consumerPump', 'mainPump','magistralPressure', 'mainValve', 'filterValve',
+               'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept',
+               'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
 
 
 keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
@@ -113,10 +120,13 @@ class Mashine(object):
     def read_raw(self):
         if not self.debug:
             raw = self._uart.read_info()
-            self._all_date = raw2dict(all_keys, json.loads(raw.decode()))
+            if len(raw) == 29:
+                self._all_date = raw2dict(all_keys_29, json.loads(raw.decode()))
+            elif len(raw) == 33:
+                self._all_date = raw2dict(all_keys_33, json.loads(raw.decode()))
         else:
             raw = simulation.all_date
-            self._all_date = raw2dict(all_keys, raw)
+            self._all_date = raw2dict(all_keys_29, raw)
         return self._all_date
 
     def __del__(self):
