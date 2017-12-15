@@ -28,10 +28,10 @@ all_keys_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 
 
 
 all_keys_30 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
-               'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'container',
-               'currentContainerVolume', 'consumerPump', 'mainPump','magistralPressure', 'mainValve', 'filterValve',
-               'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept',
-               'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
+               'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
+               'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
+               'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
+               'billAccept', 'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
 
 
 keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
@@ -62,6 +62,7 @@ def raw2dict(keys, value):
 
 def get_value(raw, keys):
     result = {}
+    print(raw['state'])
     for key in keys:
         result.update({key: raw[key]})
     return result
