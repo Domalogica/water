@@ -35,7 +35,7 @@ def get(method, params=DEFAULD_PARAM):
 
 
 def get_putting(left_score, total_paid):
-    return post(method='response', params={' ': left_score, 'totalPaid': total_paid})
+    return post(method='response', params={'leftScore': left_score, 'totalPaid': total_paid})
 
 
 def post(method, params=DEFAULD_PARAM, previous_task=None):
