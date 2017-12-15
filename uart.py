@@ -119,7 +119,10 @@ class Mashine(object):
     def read_raw(self):
         if not self.debug:
             raw = self._uart.read_info()
-            print('raw -> %s len %i' % (raw, len(raw)))
+            try:
+                print('raw -> %s len %i' % (raw, len(raw)))
+            except TypeError:
+                print('raw -> %s len 0' % raw)
             json_raw = json.loads(raw.decode())
             if len(json_raw) == 30:
                 self._all_date = raw2dict(all_keys_30, json_raw)
