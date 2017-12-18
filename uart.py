@@ -26,6 +26,8 @@ all_keys_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 
             'serviceButton', 'freeButton', 'voltage', 'billAccept', 'connectBoard', 'uid_MC', 'tempCPU',
             'coffFor10LitOut']
 
+reserv_key = ['totalHardCash', 'hardCash', 'hardMoney']
+
 
 all_keys_30 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
                'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
@@ -99,6 +101,8 @@ class Mashine(object):
             print('cech ok')
         else:
             self._packetInfo = get_value(self._all_date, keys_data)
+            for item in reserv_key:
+                self._packetInfo[item] = 0
             print('cech fatal')
         self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
         return self._packetInfo
