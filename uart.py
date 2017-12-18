@@ -40,7 +40,7 @@ keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'm
              'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept']
 
 keys_data_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
-                'sessionPaid', 'totalHardCash', 'hardCash','hardMoney', 'leftFromPaid', 'state', 'container',
+                'sessionPaid', 'totalHardCash', 'hardCash', 'hardMoney', 'leftFromPaid', 'state', 'container',
                 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve', 'filterValve',
                 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept']
 
@@ -96,8 +96,10 @@ class Mashine(object):
     def get_data(self):
         if len(self._all_date) > 30:
             self._packetInfo = get_value(self._all_date, keys_data_33)
+            print('cech ok')
         else:
             self._packetInfo = get_value(self._all_date, keys_data)
+            print('cech fatal')
         self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
         return self._packetInfo
 
