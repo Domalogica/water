@@ -39,6 +39,12 @@ keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'm
              'mainPump', 'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney',
              'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept']
 
+keys_data_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
+                'sessionPaid', 'totalHardCash', 'hardCash','hardMoney', 'leftFromPaid', 'state', 'container',
+                'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve', 'filterValve',
+                'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept']
+
+
 keys_odd = ['connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
 
 properties_mashine = ['waterPrice', 'containerMinVolume', 'maxContainerVolume']
@@ -88,7 +94,10 @@ class Mashine(object):
         return get_value(self._all_date, agent_key)
 
     def get_data(self):
-        self._packetInfo = get_value(self._all_date, keys_data)
+        if len(self._all_date) > 30:
+            self._packetInfo = get_value(self._all_date, keys_data_33)
+        else:
+            self._packetInfo = get_value(self._all_date, keys_data)
         self._packetInfo['state'] = STATE_LIST[self._packetInfo['state']]
         return self._packetInfo
 
