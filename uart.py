@@ -2,6 +2,7 @@ import serial
 import json
 
 import simulation
+import gpio
 
 GET_INFO = b'g\n'
 ENABLE = b'cj\n'
@@ -210,7 +211,10 @@ class Uart(object):
         return self.serial.write(data)
 
     def read(self):
-        return self.serial.readline()
+        data = self.uart.readline()
+        if len(data) < 2:
+            gpio.reboot()
+        return data
 
     def close(self):
         self.serial.close()

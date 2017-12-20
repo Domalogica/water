@@ -3,10 +3,11 @@
 
 from time import sleep
 import os
+
 import network
 import uart
 import agent
-
+import gpio
 
 # mashine = uart.Mashine(config.ID)
 # mashine.start(network.get_config())
@@ -46,6 +47,7 @@ if os.name == 'nt':
 else:
     work = Work(1, '/dev/ttyS1', 9600)
 
+gpio.init()
 while True:
     work.mashine.read_raw()
     work.run()
