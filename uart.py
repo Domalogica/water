@@ -71,7 +71,6 @@ def raw2dict(keys, value):
 
 def get_value(raw, keys):
     result = {}
-    print(raw['state'])
     for key in keys:
         result.update({key: raw[key]})
     return result

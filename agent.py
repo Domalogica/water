@@ -25,6 +25,7 @@ def add_data(host, key, clock, value):
 
 
 def start_agent(row):
+    print(row)
     clock = int(time.time())
     request = {
         "request": "agent data",
