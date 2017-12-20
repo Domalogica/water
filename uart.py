@@ -211,7 +211,7 @@ class Uart(object):
         return self.serial.write(data)
 
     def read(self):
-        data = self.uart.readline()
+        data = self.serial.readline()
         if len(data) < 2:
             gpio.reboot()
         return data
