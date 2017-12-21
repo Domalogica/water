@@ -139,7 +139,12 @@ class Mashine(object):
                 print('raw -> %s' % (raw, len(raw)))
             except TypeError:
                 print('raw -> %s' % raw)
-            json_raw = json.loads(raw.decode())
+
+            try:
+                json_raw = json.loads(raw.decode())
+            except AttributeError:
+                json_raw = simulation.all_date
+
             if len(json_raw) == 30:
                 self._all_date = raw2dict(all_keys_30, json_raw)
             elif len(json_raw) == 33:
