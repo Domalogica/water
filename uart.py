@@ -20,15 +20,20 @@ ERROR_SHORT = b'-2\n'
 ERROR_LONG = b'-3\n'
 ERROR_TEST = b'-4\n'
 
+all_keys_39 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
+               'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'totalHardCash', 'hardCash',
+               'hardMoney', 'leftFromPaid', 'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
+               'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor',
+               'serviceButton', 'freeButton', 'voltage', 'billAccept', 'everythingOKbit', 'coffFor10LitOut', 'tempCPU',
+               'boardTemperature', 'mainTemperature', 'outdoorTemperature', 'waterTemperature', 'tankTemperature',
+               'pumpTemperature']
+
 all_keys_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
-            'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'totalHardCash', 'hardCash',
-            'hardMoney', 'leftFromPaid',  'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
-            'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor',
-            'serviceButton', 'freeButton', 'voltage', 'billAccept', 'connectBoard', 'uid_MC', 'tempCPU',
-            'coffFor10LitOut']
-
-reserv_key = ['totalHardCash', 'hardCash', 'hardMoney']
-
+               'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'totalHardCash', 'hardCash',
+               'hardMoney', 'leftFromPaid', 'state', 'container', 'currentContainerVolume', 'consumerPump', 'mainPump',
+               'magistralPressure', 'mainValve', 'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor',
+               'serviceButton', 'freeButton', 'voltage', 'billAccept', 'connectBoard', 'uid_MC', 'tempCPU',
+               'coffFor10LitOut']
 
 all_keys_30 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
                'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
@@ -36,6 +41,7 @@ all_keys_30 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 
                'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
                'billAccept', 'connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
 
+reserv_key = ['totalHardCash', 'hardCash', 'hardMoney']
 
 keys_data = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'totalPaid',
              'sessionPaid', 'leftFromPaid', 'state', 'container', 'currentContainerVolume', 'consumerPump',
@@ -47,22 +53,20 @@ keys_data_33 = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut',
                 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve', 'filterValve',
                 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage', 'billAccept']
 
-
 keys_odd = ['connectBoard', 'uid_MC', 'tempCPU', 'coffFor10LitOut']
 
 properties_mashine = ['waterPrice', 'containerMinVolume', 'maxContainerVolume']
 
 STATE_LIST = ['NO_WATER', 'WASH_FILTER', 'WAIT', 'JUST_PAID', 'WORK', 'SETTING', 'SERVICE', 'FREE']
 
-
 agent_key = ['input10Counter', 'out10Counter', 'milLitlose', 'milLitWentOut', 'milLitContIn', 'waterPrice',
              'containerMinVolume', 'maxContainerVolume', 'totalPaid', 'sessionPaid', 'leftFromPaid', 'state',
              'container', 'currentContainerVolume', 'consumerPump', 'mainPump', 'magistralPressure', 'mainValve',
              'filterValve', 'washFilValve', 'tumperMoney', 'tumperDoor', 'serviceButton', 'freeButton', 'voltage',
-             'billAccept', 'connectBoard', 'tempCPU']
+             'billAccept', 'tempCPU']
+
 
 # agent_additional = ['ping', ]
-
 
 
 def raw2dict(keys, value):
@@ -136,19 +140,21 @@ class Mashine(object):
         if not self.debug:
             raw = self._uart.read_info()
             try:
-                print('raw -> %s' % (raw, len(raw)))
+                print('raw -> %s  len -> %s ' % (raw, len(raw)))
             except TypeError:
                 print('raw -> %s' % raw)
 
             try:
                 json_raw = json.loads(raw.decode())
-            except AttributeError:
+            except AttributeError or ValueError:
                 json_raw = simulation.all_date
 
             if len(json_raw) == 30:
                 self._all_date = raw2dict(all_keys_30, json_raw)
             elif len(json_raw) == 33:
                 self._all_date = raw2dict(all_keys_33, json_raw)
+            elif len(json_raw) == 39:
+                self._all_date = raw2dict(all_keys_39, json_raw)
         else:
             raw = simulation.all_date
             self._all_date = raw2dict(all_keys_30, raw)

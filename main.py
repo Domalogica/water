@@ -3,6 +3,7 @@
 
 from time import sleep
 import os
+import threading
 
 import network
 import uart
@@ -38,9 +39,10 @@ class Work(object):
             self.report()
 
     def report(self):
-            respons = network.post_status(self.mashine.get_data())
-            self.task = respons.get('method')
-            self.params = respons.get('param')
+            response = network.post_status(self.mashine.get_data())
+            self.task = response.get('method')
+            self.params = response.get('param')
+
 
 if os.name == 'nt':
     work = Work(1, 'com5', 9600)
@@ -48,8 +50,12 @@ else:
     work = Work(1, '/dev/ttyS1', 9600)
 
 gpio.init()
+
+agent_thread = threading.Thread(target=agent.start_agent)
+agent_thread.start()
+
 while True:
     work.mashine.read_raw()
     work.run()
-    agent.start_agent(work.mashine.zabbix())
+    agent.load_data(work.mashine.zabbix())
     sleep(1)

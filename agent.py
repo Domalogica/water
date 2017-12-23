@@ -12,6 +12,11 @@ from config import zabbix
 hostname = zabbix["hostname"]
 server = zabbix["server"]
 port = zabbix["port"]
+row_data = {}
+
+
+def load_data(row):
+    row_data.update(row)
 
 
 def getkey():
@@ -24,8 +29,7 @@ def add_data(host, key, clock, value):
     return {"host": host, "key": key, "value": value, "clock": clock}
 
 
-def start_agent(row):
-    print(row)
+def data_packing(row):
     clock = int(time.time())
     request = {
         "request": "agent data",
@@ -45,8 +49,12 @@ def start_agent(row):
         else:
             request["data"].append(add_data(hostname, key, clock, row[key]))
 
+        return request
+
+
+def send_data(data):
     try:
-        raw = zbx.get_data_to_send(json.dumps(request))
+        raw = zbx.get_data_to_send(json.dumps(data))
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((server, port))
         sock.send(raw)
@@ -58,4 +66,10 @@ def start_agent(row):
             sock.close()
     except Exception as e:
         print(e)
-    # time.sleep(10)
+
+
+def start_agent():
+    while True:
+        request = data_packing(row_data)
+        send_data(request)
+        time.sleep(10)
