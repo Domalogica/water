@@ -5,7 +5,8 @@ import config
 import json
 
 
-BASE_URL = 'http://194.67.217.180:8484/'
+# BASE_URL = 'http://194.67.217.180:8484/'
+BASE_URL = 'http://5.101.179.191:8484/'
 # BASE_URL = 'http://192.168.10.30:18787/'
 HOST_URL = 'host/'
 DIR = 'vodomat/param'

@@ -1,4 +1,4 @@
-ID = 1
+ID = 221
 ID_DICT = {'wm': ID}
 HOST_NAME = 'vodomat0'
 
