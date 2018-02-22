@@ -7,8 +7,8 @@ import threading
 
 import network
 import uart
-# import agent
-# import gpio
+import agent
+import gpio
 
 # mashine = uart.Mashine(config.ID)
 # mashine.start(network.get_config())
@@ -49,13 +49,13 @@ if os.name == 'nt':
 else:
     work = Work(1, '/dev/ttyS1', 9600)
 
-# gpio.init()
+gpio.init()
 
-# agent_thread = threading.Thread(target=agent.start_agent)
-# agent_thread.start()
+agent_thread = threading.Thread(target=agent.start_agent)
+agent_thread.start()
 
 while True:
     work.mashine.read_raw()
     work.run()
-    # agent.load_data(work.mashine.zabbix())
+    agent.load_data(work.mashine.zabbix())
     sleep(1)
