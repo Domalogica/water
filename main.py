@@ -10,10 +10,6 @@ import uart
 import agent
 import gpio
 
-# mashine = uart.Mashine(config.ID)
-# mashine.start(network.get_config())
-# network.post_status(mashine.get_data())
-
 
 class Work(object):
     def __init__(self, device_id, ports, boud):
@@ -53,6 +49,8 @@ gpio.init()
 
 agent_thread = threading.Thread(target=agent.start_agent)
 agent_thread.start()
+
+os.system('date -s "%s"' % network.get_time())
 
 while True:
     work.mashine.read_raw()
