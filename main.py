@@ -50,17 +50,17 @@ gpio.init()
 agent_thread = threading.Thread(target=agent.start_agent)
 agent_thread.start()
 
-t = 0
-while True:
-    try:
-        if t > 3:
-            break
-        os.system('date -s "%s"' % network.get_time())
-    except:
-        t += 1
-        sleep(1)
-    else:
-        break
+# t = 0
+# while True:
+#     try:
+#         if t > 3:
+#             break
+#         os.system('date -s "%s"' % network.get_time())
+#     except:
+#         t += 1
+#         sleep(1)
+#     else:
+#         break
 
 
 while True:
