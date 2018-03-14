@@ -20,7 +20,7 @@ DEFAULD_PARAM = config.ID_DICT
 
 
 def post_status(status, previous_task=None):
-    return post(method=STATUS, params=status, previous_task=previous_task, timeout=2)
+    return post(method=STATUS, params=status, previous_task=previous_task)
 
 
 def get_config():
@@ -44,7 +44,7 @@ def post(method, params=DEFAULD_PARAM, previous_task=None):
     try:
         if method == 'response':
             print(params)
-        responds = requests.post(url=URL, json=build_message(method, params, previous_task))
+        responds = requests.post(url=URL, json=build_message(method, params, previous_task), timeout=2)
         print(responds)
         return responds.json()
     except requests.exceptions.ConnectionError:
