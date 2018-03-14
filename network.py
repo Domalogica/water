@@ -20,7 +20,7 @@ DEFAULD_PARAM = config.ID_DICT
 
 
 def post_status(status, previous_task=None):
-    return post(method=STATUS, params=status, previous_task=previous_task)
+    return post(method=STATUS, params=status, previous_task=previous_task, timeout=2)
 
 
 def get_config():
@@ -29,7 +29,7 @@ def get_config():
 
 
 def get(method, params=DEFAULD_PARAM):
-    return requests.get(url=BASE_URL + method, params=params)
+    return requests.get(url=BASE_URL + method, params=params, timeout=2)
 
 
 def get_putting(left_score, total_paid):
