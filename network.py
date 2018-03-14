@@ -53,6 +53,8 @@ def post(method, params=DEFAULD_PARAM, previous_task=None):
         return {'method': ERROR_METHOD, 'param': 'json error'}
     except ConnectionError:
         return {'method': ERROR_METHOD, 'param': 'Connection Error'}
+    except requests.exceptions.ReadTimeout:
+        return {'method': ERROR_METHOD, 'param': 'connect error'}
 
 
 def build_message(method, params, previous_task=None):
