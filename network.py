@@ -18,6 +18,8 @@ GET_CONFIG = 'get_settings'
 
 DEFAULD_PARAM = config.ID_DICT
 
+TIMEOUT = 30
+
 
 def post_status(status, previous_task=None):
     return post(method=STATUS, params=status, previous_task=previous_task)
@@ -29,7 +31,7 @@ def get_config():
 
 
 def get(method, params=DEFAULD_PARAM):
-    return requests.get(url=BASE_URL + method, params=params, timeout=2)
+    return requests.get(url=BASE_URL + method, params=params, timeout=TIMEOUT)
 
 
 def get_putting(left_score, total_paid):
@@ -44,7 +46,7 @@ def post(method, params=DEFAULD_PARAM, previous_task=None):
     try:
         if method == 'response':
             print(params)
-        responds = requests.post(url=URL, json=build_message(method, params, previous_task), timeout=2)
+        responds = requests.post(url=URL, json=build_message(method, params, previous_task), timeout=TIMEOUT)
         print(responds)
         return responds.json()
     except requests.exceptions.ConnectionError:
