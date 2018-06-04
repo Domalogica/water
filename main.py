@@ -9,8 +9,6 @@ import network
 import uart
 import agent
 import gpio
-import legomat
-
 
 
 class Work(object):

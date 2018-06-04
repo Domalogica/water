@@ -180,6 +180,11 @@ def check_code(code, types='code'):
             return -1
 
 
+class Logomat(object):
+    def __init__(self,  port='com3', boud_rate=9600):
+        self.uart = Uart(port=port)
+
+
 class Uart(object):
     def __init__(self, port='com5', boud_rate=9600):
         self.serial = serial.Serial(port, boud_rate, timeout=1)
@@ -231,3 +236,24 @@ class Uart(object):
 
     def __del__(self):
         self.close()
+
+
+class LegoUart(Uart):
+
+    def __init__(self, port='com3', boud_rate=9600):
+        Uart.__init__(self, port, boud_rate)
+
+    def read(self):
+        return self.serial.readlines()
+
+    def get_putting(self):
+        self.write(PUTTING)
+
+    def payment(self, score):
+        data = "%s%i\n" % (PAYMENT, score)
+        self.write(data.encode('ascii'))
+
+    def read_info(self):
+        self.write(GET_INFO)
+        if self.read_code():
+            return self.read()
