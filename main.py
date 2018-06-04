@@ -50,8 +50,6 @@ else:
     agent_thread.start()
 
 
-legomat.start()
-
 while True:
     work.mashine.read_raw()
     work.run()
