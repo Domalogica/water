@@ -9,6 +9,8 @@ import network
 import uart
 import agent
 import gpio
+import legomat
+
 
 
 class Work(object):
@@ -41,27 +43,16 @@ class Work(object):
 
 
 if os.name == 'nt':
-    work = Work(1, 'com5', 9600)
+    work = Work(1, 'com3', 9600)
 else:
     work = Work(1, '/dev/ttyS1', 9600)
+    gpio.init()
 
-gpio.init()
+    agent_thread = threading.Thread(target=agent.start_agent)
+    agent_thread.start()
 
-agent_thread = threading.Thread(target=agent.start_agent)
-agent_thread.start()
 
-# t = 0
-# while True:
-#     try:
-#         if t > 3:
-#             break
-#         os.system('date -s "%s"' % network.get_time())
-#     except:
-#         t += 1
-#         sleep(1)
-#     else:
-#         break
-
+legomat.start()
 
 while True:
     work.mashine.read_raw()

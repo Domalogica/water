@@ -18,7 +18,7 @@ GET_CONFIG = 'get_settings'
 
 DEFAULD_PARAM = config.ID_DICT
 
-TIMEOUT = 30
+TIMEOUT = 10
 
 
 def post_status(status, previous_task=None):
